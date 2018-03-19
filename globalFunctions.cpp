@@ -23,6 +23,22 @@ void initializeStreams(std::ifstream *ptr)
 	}
 }
 
+void closeStreams(std::ofstream *ptr)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		ptr[i].close();
+	}
+}
+
+void closeStreams(std::ifstream *ptr)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		ptr[i].close();
+	}
+}
+
 void printMenu()
 {
 	std::cout << "1. Enter a new Student.\n2. Populate data from file.\n3. Save data to file." << std::endl << std::endl;
@@ -57,18 +73,24 @@ void deleteData(std::ofstream* ptr)
 	}
 }
 
-void writeData(std::ofstream *ptr, student *argStudent)
+void writeData(student *argStudent)
 {
-	ptr[0] << argStudent->getId() << std::endl;
-	ptr[1] << argStudent->getName() << std::endl;
-	ptr[3] << argStudent->getSemester() << std::endl;
+	std::ofstream files[5];
+
+	initializeStreams(files);
+
+	files[0] << argStudent->getId() << std::endl;
+	files[1] << argStudent->getName() << std::endl;
+	files[3] << argStudent->getSemester() << std::endl;
 
 	for (int i = 0; i < argStudent->getSemester(); i++)
 	{
-		ptr[2] << argStudent->getGpa(i) << std::endl;
+		files[2] << argStudent->getGpa(i) << std::endl;
 	}
 
-	ptr[4] << argStudent->getContact() << std::endl;
+	files[4] << argStudent->getContact() << std::endl;
+
+	closeStreams(files);
 }
 
 void readData(std::ifstream *ptr, student *argStudent)
@@ -96,12 +118,18 @@ void readData(std::ifstream *ptr, student *argStudent)
 	argStudent->setContact(inpContact);
 }
 
-void populate(std::ifstream *files, student *ptr, int limit) // Receives file stream and student array pointers and populates them.
+void populate(student *ptr, int limit) // Receives file stream and student array pointers and populates them.
 {
+	std::ifstream files[5];
+
+	initializeStreams(files);
+
 	for (int i = 0; i < limit; i++) // Every file (except gpa.txt) has a one-to-one correspondence of data stored and thus if eof is encountered in even one file, it means that eof will be encountered in other files as well.
 	{
 		readData(files, &ptr[i]);
 	}
+
+	closeStreams(files);
 }
 
 int getNumberOFStudents(const char* addr) // Calculate the number of students stored in the files.

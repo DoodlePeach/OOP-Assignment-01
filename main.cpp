@@ -7,12 +7,14 @@ using namespace std;
 
 void initializeStreams(ifstream*);
 void initializeStreams(ofstream*);
+void closeStreams(std::ofstream*);
+void closeStreams(std::ifstream*);
 void printMenu();
-void writeData(std::ofstream *ptr, student *argStudent);
+void writeData(student *argStudent);
 void readData(std::ifstream *ptr, student *argStudent);
 void deleteData(std::ofstream* ptr);
 int getNumberOFStudents(const char* addr);
-void populate(std::ifstream *files, student *ptr, int limit);
+void populate(student *ptr, int limit);
 std::istream& operator >> (istream & is, student &obj);
 
 int main()
@@ -29,9 +31,6 @@ int main()
 
 	while (option != 6)
 	{
-		initializeStreams(getStream);
-		initializeStreams(saveStream);
-
 		if (pendingSave)
 		{
 			cout << "[*] Some data is waiting to be saved! Please press 2 to save." << endl;
@@ -48,10 +47,6 @@ int main()
 
 				pendingSave = true;
 
-				obj.disp();
-
-				//Sleep(1000000);
-
 				break;
 			}
 
@@ -59,13 +54,11 @@ int main()
 			{
 				size = getNumberOFStudents("id.txt");
 
-				cout << size;
-
 				if (size > 0)
 				{
 					ptr = new student [size];
 
-					populate(getStream, ptr, size);
+					populate(ptr, size);
 
 					cout << "Populated " << size << " students!" << endl;
 
@@ -85,7 +78,7 @@ int main()
 			{
 				if (pendingSave)
 				{
-					writeData(saveStream, &obj);
+					writeData(&obj);
 					pendingSave = false;
 				}
 
