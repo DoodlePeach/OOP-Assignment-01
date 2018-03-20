@@ -13,6 +13,7 @@ void printMenu();
 void writeData(student *argStudent);
 void readData(std::ifstream *ptr, student *argStudent);
 void deleteData(std::ofstream* ptr);
+void search(student *studentArray, int size);
 int getNumberOFStudents(const char* addr);
 void populate(student *ptr, int limit);
 std::istream& operator >> (istream & is, student &obj);
@@ -23,7 +24,7 @@ int main()
 
 	bool pendingSave = false;
 
-	student *ptr = 0;
+	student *ptrStudentArray = 0;
 	student obj;
 
 	ifstream getStream[5];
@@ -56,9 +57,9 @@ int main()
 
 				if (size > 0)
 				{
-					ptr = new student [size];
+					ptrStudentArray = new student [size];
 
-					populate(ptr, size);
+					populate(ptrStudentArray, size);
 
 					cout << "Populated " << size << " students!" << endl;
 
@@ -91,17 +92,30 @@ int main()
 
 				break;
 			}
+
+			case 5:
+			{
+				search(ptrStudentArray, size);
+
+
+				break;
+			}
+
+			case 7:
+			{
+				for (int i = 0; i < size; i++)
+				{
+					ptrStudentArray[i].disp();
+				}
+
+				Sleep(1200);
+			}
 		}
 
 		system("CLS");
 	}
 
-	for (int i = 0; i < size; i++)
-	{
-		ptr[i].disp();
-	}
-
-	delete[] ptr;
+	delete[] ptrStudentArray;
 
 	return 0;
 }

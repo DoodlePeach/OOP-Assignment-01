@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <Windows.h>
 #include "student.h"
+
 
 
 const char *fileNames[5] = { "id.txt", "name.txt", "gpa.txt", "semseter.txt", "contact.txt" };
@@ -188,4 +190,112 @@ std::istream& operator >> (std::istream & is, student &obj)
 	}
 
 	return is;
+}
+
+
+void search(student *studentArray, int studentArraySize)
+{
+	if(studentArraySize > 0)
+	{
+		char option;
+
+		std::cout << "What would you like to search by? (a, b, c or d): ";
+
+		std::cin >> option;
+
+		switch (option)
+		{
+			case 'a':
+			{
+				float searchGpa;
+
+				std::cout << std::endl << "Enter GPA: ";
+				std::cin >> searchGpa;
+
+				for (int i = 0; i < studentArraySize; i++)
+				{
+					for (int j = 0; j < studentArray[i].getSemester(); j++)
+					{
+						if (studentArray[i].getGpa(j) == searchGpa)
+						{
+							studentArray[i].disp();
+
+							break;
+						}
+					}
+				}
+
+				
+				std::cin.get();
+				std::cin.get();
+
+				break;
+			}
+
+			case 'b':
+			{
+				std::string searchName;
+
+				std::cout << std::endl << "Enter Name: ";
+				std::cin >> searchName;
+
+				for (int i = 0; i < studentArraySize; i++)
+				{
+					if (studentArray[i].getName() == searchName)
+					{
+						studentArray[i].disp();
+					}
+				}
+
+				break;
+			}
+
+			case 'c':
+			{
+				int searchSemester;
+
+				std::cout << std::endl << "Enter Semester: ";
+				std::cin >> searchSemester;
+
+				for (int i = 0; i < studentArraySize; i++)
+				{
+					if (studentArray[i].getSemester() == searchSemester)
+					{
+						studentArray[i].disp();
+					}
+				}
+
+				break;
+			}
+
+			case 'd':
+			{
+				std::string searchContact;
+
+				std::cout << std::endl << "Enter Contact: ";
+				std::cin >> searchContact;
+
+				for (int i = 0; i < studentArraySize; i++)
+				{
+					if (studentArray[i].getContact() == searchContact)
+					{
+						studentArray[i].disp();
+					}
+				}
+
+				break;
+			}
+
+			default:
+			{
+				std::cout << "Invalid choice, returning to main menu." << std::endl;
+			}
+		}
+	}
+	
+	else
+	{
+		std::cout << "No data loaded, nothing to search!." << std::endl;
+	}
+
 }
